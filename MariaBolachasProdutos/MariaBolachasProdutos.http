@@ -1,0 +1,6 @@
+@MariaBolachasProdutos_HostAddress = http://localhost:5010
+
+GET {{MariaBolachasProdutos_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
