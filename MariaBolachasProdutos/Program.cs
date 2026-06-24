@@ -2,6 +2,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
+//Coloca os endpoints da API no Swagger, para que seja possível testar a API através do navegador
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -22,10 +26,5 @@ app.MapGet("/Bolachas", () =>  new[] {
 
 });
 
-app.MapGet("/Roscas", () =>  new[] { 
-    new { Id = 1, Nome = "Rosca de Creme P", Preco = 43.50m },
-    new { Id = 2, Nome = "Rosca de Chocolate", Preco = 43.50m },
-    new { Id = 3, Nome = "Rosca de Chocolate", Preco = 43.50m }
-});
 
 app.Run();
