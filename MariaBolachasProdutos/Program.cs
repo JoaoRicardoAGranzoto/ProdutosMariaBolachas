@@ -28,35 +28,18 @@ var bolachas = new List<Bolachas>()
 
 app.UseHttpsRedirection();
 
-//Primeira rota da API, que retorna uma lista de bolachas com seus respectivos preços
-app.MapGet("/Bolachas", () => bolachas);
-
-app.MapGet("/Bolachas/{Nome}", (string nome) =>
+app.MapGet("/bolachas", () =>
 {
-    var bolacha = bolachas.First(b => b.Nome == nome);
+    return bolachas;
+});
+
+app.MapGet("/bolachas/{id}", (int id) =>
+{
+    var bolacha = bolachas.FirstOrDefault(b => b.Id == id);
     if (bolacha == null)
     {
         return Results.NotFound();
     }
-    return Results.Ok(bolacha);
-});
-
-app.MapPost("/Bolachas", (Bolachas bolacha) =>
-{
-    bolachas.Add(bolacha);
-    return Results.Created($"/Bolachas/{bolacha.Nome}", bolacha);
-});
-
-app.MapPut("/Bolachas/{Nome}", (string nome, Bolachas bolachaAtualizada) =>
-{
-    var bolacha = bolachas.FirstOrDefault(b => b.Nome == nome);
-    if (bolacha == null)
-    {
-        return Results.NotFound();
-    }
-    bolacha.Nome = bolachaAtualizada.Nome;
-    bolacha.Preco = bolachaAtualizada.Preco;
-    bolacha.Estoque = bolachaAtualizada.Estoque;
     return Results.Ok(bolacha);
 });
 
