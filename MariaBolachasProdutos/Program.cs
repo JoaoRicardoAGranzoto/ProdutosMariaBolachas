@@ -48,6 +48,35 @@ app.MapPost("/alimentos", (Alimentos novoAlimento) =>
     return Results.Created();
 });
 
+app.MapPut("/alimentos/{nome}", (string nome, Alimentos alimentoAtualizado) =>
+{
+    var alimento = alimentos.FirstOrDefault(a => a.Nome == nome);
+
+    if (alimento is null)
+    {
+        return Results.NotFound($"Alimento com nome {nome} não encontrado.");
+    }
+
+    alimento.Nome = alimentoAtualizado.Nome;
+    alimento.Preco = alimentoAtualizado.Preco;
+    alimento.Estoque = alimentoAtualizado.Estoque;
+
+    return Results.Ok(alimento);
+});
+
+app.MapDelete("/alimentos/{nome}", (string nome) =>
+{
+    var alimento = alimentos.FirstOrDefault(a => a.Nome == nome);
+
+    if (alimento is null)
+    {
+        return Results.NotFound($"Alimento com nome {nome} não encontrado.");
+    }
+
+    alimentos.Remove(alimento);
+    return Results.Ok($"Alimento com nome {nome} removido com sucesso.");
+});
+
 app.Run();
 
 class Alimentos
