@@ -36,11 +36,8 @@ app.MapGet("/bolachas", () =>
 app.MapGet("/bolachas/{id}", (int id) =>
 {
     var bolacha = bolachas.FirstOrDefault(b => b.Id == id);
-    if (bolacha == null)
-    {
-        return Results.NotFound();
-    }
-    return Results.Ok(bolacha);
+    
+    return bolacha is not null ? Results.Ok(bolacha) : Results.NotFound();
 });
 
 app.Run();
