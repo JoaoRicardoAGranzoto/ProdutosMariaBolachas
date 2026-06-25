@@ -37,7 +37,7 @@ app.MapGet("/bolachas/{id}", (int id) =>
 {
     var bolacha = bolachas.FirstOrDefault(b => b.Id == id);
     
-    return bolacha is not null ? Results.Ok(bolacha) : Results.NotFound();
+    return bolacha is not null ? Results.Ok(bolacha) : Results.NotFound($"Bolacha com ID {id} não encontrada.");
 });
 
 app.Run();
@@ -45,7 +45,7 @@ app.Run();
 class Bolachas
 {
     public int Id { get; set; }
-    public string Nome { get; set; }
+    public required string Nome { get; set; }
     public decimal Preco { get; set; }
     public int Estoque { get; set; }
 }
