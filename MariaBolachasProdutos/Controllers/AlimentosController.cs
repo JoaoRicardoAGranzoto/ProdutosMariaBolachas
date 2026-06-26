@@ -1,76 +1,63 @@
+using MariaBolachasProdutos.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+// classe que lida apenas com a API, sem se preocupar com os produtos
 namespace MariaBolachasProdutos.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AlimentosController : ControllerBase
     {
-        private static List<Alimento> alimentos = new List<Alimento>()
-        {
-            new Alimento { Id = 1, Nome = "Sequilho Leite Condensado", Preco = 43.50m, Estoque = 100 },
-            new Alimento { Id = 2, Nome = "Sequilho Creme de Leite E Limao", Preco = 43.50m, Estoque = 150 },
-            new Alimento { Id = 3, Nome = "Nata", Preco = 43.50m, Estoque = 80 },
-            new Alimento { Id = 4, Nome = "Sequilho Coco", Preco = 43.50m, Estoque = 230 },
-            new Alimento { Id = 5, Nome = "Sequilho Maracuja com Chocolate", Preco = 43.50m, Estoque = 90 },
-            new Alimento { Id = 6, Nome = "Sequilho Nata e Coco", Preco = 43.50m, Estoque = 123 },
-            new Alimento { Id = 7, Nome = "Nata com Goiabada", Preco = 43.50m, Estoque = 230 },
-            new Alimento { Id = 8, Nome = "Rosca Chocolate G", Preco = 54.50m, Estoque = 2 },
-            new Alimento { Id = 9, Nome = "Rosca Chocolate P", Preco = 38.23m, Estoque = 2 }
-        };
+        private ProdutosService produtosService= new ProdutosService();
 
         [HttpGet]
         public ActionResult<List<Alimento>> Get()
         {
-            return Ok(alimentos);
+            return Ok(produtosService.ObterAlimentos());
         }
 
         [HttpGet("{nome}")]
         public ActionResult<Alimento> GetByName(string nome)
         {
-            var alimento = alimentos.FirstOrDefault(a => a.Nome == nome);
-            if (alimento is null)
+            var alimento = produtosService.ObterAlimentoPorNome(nome);
+            if (alimento is not null)
             {
-                return NotFound($"Alimento com nome {nome} não encontrado.");
+                return Ok(alimento);
             }
-            return Ok(alimento);
+            
+            return NotFound($"Alimento com nome {nome} não encontrado.");
         }
 
         [HttpPost]
         public ActionResult Post(Alimento novoAlimento)
         {
-            alimentos.Add(novoAlimento);
+            produtosService.AdicionarAlimento(novoAlimento);
             return Created();
         }
 
         [HttpPut("{nome}")]
         public ActionResult Put(string nome, Alimento alimentoAtualizado)
         {
-            var alimento = alimentos.FirstOrDefault(a => a.Nome == nome);
-            if (alimento is null)
+            var alimento = produtosService.AtualizarAlimento(nome, alimentoAtualizado);
+            if (alimento is not null)
             {
-                return NotFound($"Alimento com nome {nome} não encontrado.");
+               return Ok(produtosService.ObterAlimentos());
             }
-
-            alimento.Nome = alimentoAtualizado.Nome;
-            alimento.Preco = alimentoAtualizado.Preco;
-            alimento.Estoque = alimentoAtualizado.Estoque;
-
-            return Ok(alimento);
+            
+            return NotFound($"Alimento com nome {nome} não encontrado.");
         }
 
         [HttpDelete("{nome}")]
         public ActionResult Delete(string nome)
         {
-            var alimento = alimentos.FirstOrDefault(a => a.Nome == nome);
-            if (alimento is null)
+            var alimento = produtosService.RemoverAlimento(nome);
+            if (alimento == true)
             {
-                return NotFound($"Alimento com nome {nome} não encontrado.");
+                return NoContent();
             }
 
-            alimentos.Remove(alimento);
-            return NoContent();
+            return NotFound($"Alimento com nome {nome} não encontrado.");
         }
     }
 }
