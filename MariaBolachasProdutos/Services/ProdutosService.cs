@@ -3,7 +3,7 @@ using System;
 namespace MariaBolachasProdutos.Services;
 
 // Classe que lida apenas com produtos, sem se preocupar com a API ou o Controller
-public class ProdutosService
+public class ProdutosService : IAlimentosService
 {
     private static List<Alimento> alimentos = new List<Alimento>()
     {

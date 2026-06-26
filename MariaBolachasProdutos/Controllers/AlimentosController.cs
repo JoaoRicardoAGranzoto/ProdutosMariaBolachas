@@ -9,7 +9,12 @@ namespace MariaBolachasProdutos.Controllers
     [ApiController]
     public class AlimentosController : ControllerBase
     {
-        private ProdutosService produtosService= new ProdutosService();
+        private IAlimentosService produtosService;
+
+        public AlimentosController(IAlimentosService produtosService)
+        {
+            this.produtosService = produtosService;
+        }
 
         [HttpGet]
         public ActionResult<List<Alimento>> Get()

@@ -1,3 +1,5 @@
+using MariaBolachasProdutos.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
@@ -7,6 +9,9 @@ builder.Services.AddControllers();
 //Coloca os endpoints da API no Swagger, para que seja possível testar a API através do navegador
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Adiciona a injeção de dependência para a interface IAlimentosService e a implementação ProdutosService
+builder.Services.AddScoped<IAlimentosService, ProdutosService>();
 
 var app = builder.Build();
 
