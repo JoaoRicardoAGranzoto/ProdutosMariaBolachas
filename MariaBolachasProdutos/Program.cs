@@ -1,4 +1,4 @@
-.using MariaBolachasProdutos.Services;
+using MariaBolachasProdutos.Services;
 using MariaBolachasProdutos.Database;
 using Microsoft.EntityFrameworkCore;
 
